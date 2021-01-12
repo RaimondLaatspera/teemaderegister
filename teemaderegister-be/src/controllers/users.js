@@ -8,6 +8,8 @@ const User = require('../models/user')
 const log = require('../utils/logger')
 const { signToken, blacklistToken } = require('../utils/jwt')
 const { Error, NotAuthorizedError } = require('../utils/errors')
+const mail = require('./../utils/mail')
+const crypto = require('crypto')
 
 module.exports.getUser = async (req, res) => {
   // Check if user from token exists
@@ -29,7 +31,8 @@ module.exports.getUser = async (req, res) => {
       },
       login: {
         email: user.login.email,
-        roles: user.login.roles
+        roles: user.login.roles,
+        emailConfirmed: user.login.emailConfirmed
       },
       updatedAt: user.updatedAt
     }
@@ -81,13 +84,35 @@ module.exports.updateUser = async (req, res) => {
     })
   if (userWithSameEmail) throw new Error(`Email ${email} already in use`)
 
+  const user = await User.findById(req.user._id);
+
+  //const user = await User.findOne({'login.email': email})
+
+  const newtoken = await crypto.randomBytes(50).toString('hex');
+  let confirmLink = "http://localhost:3000/api/auth/emailconfirm/" + newtoken
+
+  confirmLink += "?id="+req.user._id;
+
+  await user.save()
+
+  await mail.sendMail({
+    to: email,
+    subject: "Email verification",
+    template: {
+      name: 'emailValidate',
+      data: { confirmLink }
+    }
+  })
+
   await User.findByIdAndUpdate(req.user._id, {
     $set: {
       'profile.firstName': firstName,
       'profile.lastName': lastName,
       // TODO Fix for unique slug, waiting(teemaderegister-be/pull/18)
       'profile.slug': slug(firstName + ' ' + lastName),
-      'login.email': email
+      'login.email': email,
+      'login.emailConfirmed' : false,
+      'login.emailConfirmToken' : newtoken
     }
   })
 
@@ -178,10 +203,4 @@ module.exports.resetPicture = async (req, res) => {
     log.debug(`${err && err.code} - Probably ${original} already deleted`))
 
   return res.json({ user, message: 'Picture updated successfully' })
-}
-
-module.exports.getAllUsers = async (req, res) => {
-  const users = await User.find({}, {'login.password': 0})
-
-  return res.json(users)
 }
