@@ -16,7 +16,8 @@ import {
   ACCOUNT_PASSWORD,
   SETTINGS_ACCOUNT_PATH,
   SETTINGS_PASSWORD_PATH,
-  TOS_PATH
+  TOS_PATH,
+  SIGN_UP
 } from './constants/RouterConstants'
 
 import CurriculumContainer from './containers/CurriculumContainer'
@@ -34,6 +35,7 @@ import SettingsAccountContainer from './containers/SettingsAccountContainer'
 import SettingsPasswordContainer from './containers/SettingsPasswordContainer'
 import CurriculumAddContainer from './containers/CurriculumAddContainer'
 import TermsOfServiceContainer from './containers/TermsOfServiceContainer'
+import SignUpContainer from './containers/SignUpContainer'
 
 import store from './store/configureStore'
 import { initAnalytics } from './utils/Analytics'
@@ -99,6 +101,9 @@ render(
                 } />
                 <Route path={TOS_PATH} component={
                   RouteWrapContainer(props => <TermsOfServiceContainer {...props} />)
+                } />
+                <Route path={SIGN_UP} component={
+                  RouteWrapContainer(props => <SignUpContainer {...props} />)
                 } />
                 <Route component={
                   RouteWrapContainer(props => <NotFound {...props} />)

@@ -10,6 +10,7 @@ export const ACCOUNT_PASSWORD = '/account/password/:token'
 export const SETTINGS_ACCOUNT_PATH = '/settings/account'
 export const SETTINGS_PASSWORD_PATH = '/settings/password'
 export const TOS_PATH = '/tos'
+export const SIGN_UP = '/sign_up'
 
 export const INITIAL_ROUTE = {
   keys: {},

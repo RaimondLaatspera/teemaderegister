@@ -20,3 +20,4 @@ export const USER_PICTURE_RESET_URL = `${API}/users/reset-picture`
 export const ADMIN_ADD_NEW_USER = `${API}/admin/createUser`
 export const TOS_LOAD = `${API}/tos`
 export const TOS_SAVE = `${API}/admin/tos/save`
+export const SIGNUP_URL = `${API}/auth/local/signup`
