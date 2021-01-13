@@ -37,11 +37,13 @@ class Admin extends React.Component {
       registered: <AdminTopics type='registered'/>,
       available: <AdminTopics type='available'/>,
       defended: <AdminTopics type='defended'/>,
+      addNewTopic: <AdminTopics type ='addNew'/>,
       confs: <AdminConfirmations/>,
       supervisors: <AdminUsers type='supervisor'/>,
       students: <AdminUsers type='students'/>,
       addNewUser: <AdminUsers type='add-new-user'/>,
-      tos: <AdminTosContainer />
+      tos: <AdminTosContainer />,
+      // newTopic: <AdminUsers type='new-topic'/>
     }
 
     this.defaultPage = 'registered'
@@ -94,9 +96,10 @@ class Admin extends React.Component {
                 defaultOpenKeys={['topics', 'users']}
                 onSelect={this.onSelect}>
                 <SubMenu key='topics' title={<span><BookOutlined/>Topics</span>}>
-                  <Menu.Item key='registered'>Registered</Menu.Item>
+                  {/*<Menu.Item key='registered'>Registered</Menu.Item>*/}
                   <Menu.Item key='available'>Available</Menu.Item>
                   <Menu.Item key='defended'>Defended</Menu.Item>
+                  <Menu.Item key='newTopic'>New topic</Menu.Item>
                 </SubMenu>
                 <Menu.Item key='confs'>
                   <LaptopOutlined/>
